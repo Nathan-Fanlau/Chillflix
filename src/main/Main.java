@@ -224,9 +224,10 @@ public class Main extends Application {
 			String username = nameField.getText(); 
 			String email = emailField.getText(); 
 			String pass = passField.getText(); 
+			String role = "customer"; 
 			
-			String query = String.format("INSERT INTO users VALUES ('%s', '%s', '%s', '%s')",
-					id, username, email, pass); 
+			String query = String.format("INSERT INTO users VALUES ('%s', '%s', '%s', '%s', '%s')",
+					id, username, email, pass, role); 
 			connect.execUpdate(query);
 			refreshTable(); 
 		});
@@ -302,8 +303,8 @@ public class Main extends Application {
 				String id = connect.rs.getString("ID"); 
 				String username = connect.rs.getString("Username"); 
 				String email = connect.rs.getString("Email"); 
-				String pass = connect.rs.getString("Password"); 
-				String role = connect.rs.getString("User"); 
+				String pass = connect.rs.getString("Password");
+				String role = connect.rs.getString("Role");
 				
 				userList.add(new User(id, username, email, pass, role)); 
 			}
