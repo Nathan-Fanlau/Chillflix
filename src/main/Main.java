@@ -40,7 +40,7 @@ public class Main extends Application {
 	PasswordField passField; 
 	Button submitButton, updateButton, deleteButton, loginButton, registerButton;
 	TableView<User> userTable; 
-	TableColumn<User, String> idCol, nameCol, emailCol; 
+	TableColumn<User, String> idCol, nameCol, emailCol, roleCol; 
 	HBox buttonHbox; 
 	
 	private Connect connect = Connect.getInstance(); 
@@ -204,12 +204,15 @@ public class Main extends Application {
 		nameCol.setCellValueFactory(new PropertyValueFactory<User, String>("name"));
 		emailCol = new TableColumn<>("User Email"); 
 		emailCol.setCellValueFactory(new PropertyValueFactory<User, String>("email")); 
+		roleCol = new TableColumn<>("User Role"); 
+		roleCol.setCellValueFactory(new PropertyValueFactory<User, String>("role")); 
 		
-		idCol.setMinWidth(root.getWidth() / 3);
-		nameCol.setMinWidth(root.getWidth() / 3);
-		emailCol.setMinWidth(root.getWidth() / 3);
+		idCol.setMinWidth(root.getWidth() / 4);
+		nameCol.setMinWidth(root.getWidth() / 4);
+		emailCol.setMinWidth(root.getWidth() / 4);
+		roleCol.setMinWidth(root.getWidth() / 4);
 		
-		userTable.getColumns().addAll(idCol, nameCol, emailCol);
+		userTable.getColumns().addAll(idCol, nameCol, emailCol, roleCol);
 		
 		refreshTable(); 
 	}
