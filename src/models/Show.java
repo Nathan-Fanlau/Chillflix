@@ -1,28 +1,30 @@
 package models;
 
 public class Show extends Content{
-	private int seasons;
-	private int episodes;
-	private int current;
+	private Integer seasons;
+	private Integer episodes;
+	private Integer current;
 	
-	public int getSeasons() {
+	public Integer getSeasons() {
 		return seasons;
 	}
-	public void setSeasons(int seasons) {
+	public void setSeasons(Integer seasons) {
 		this.seasons = seasons;
 	}
-	public int getEpisodes() {
+	public Integer getEpisodes() {
 		return episodes;
 	}
-	public void setEpisodes(int episodes) {
+	public void setEpisodes(Integer episodes) {
 		this.episodes = episodes;
 	}
-	public int getCurrent() {
+	public Integer getCurrent() {
 		return current;
 	}
-	public void setCurrent(int current) {
+	public void setCurrent(Integer current) {
 		this.current = current;
 	}
+	
+	
 	
 	
 	

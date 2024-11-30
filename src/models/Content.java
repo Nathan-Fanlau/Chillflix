@@ -1,8 +1,8 @@
 package models;
 
 public abstract class Content {
-	private int ID;
+	private Integer ID;
 	private String title;
-	private int duration;
+	private Integer duration;
 	private String genre;
 }
