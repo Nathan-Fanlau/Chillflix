@@ -1,7 +1,7 @@
-package factory;
+package factory.content;
 
-import models.Content;
-import models.Movie;
+import models.content.Content;
+import models.content.Movie;
 
 public class MovieFactory extends ContentFactory{
 

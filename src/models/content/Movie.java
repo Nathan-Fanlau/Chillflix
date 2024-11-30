@@ -1,4 +1,4 @@
-package models;
+package models.content;
 
 public class Movie extends Content{
 	private String director;

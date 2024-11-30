@@ -1,7 +1,7 @@
-package factory;
+package factory.subscription;
 
-import models.Free;
-import models.Subscription;
+import models.subscription.Free;
+import models.subscription.Subscription;
 
 public class FreeFactory extends SubscriptionFactory{
 

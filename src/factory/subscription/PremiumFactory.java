@@ -1,7 +1,7 @@
-package factory;
+package factory.subscription;
 
-import models.Premium;
-import models.Subscription;
+import models.subscription.Premium;
+import models.subscription.Subscription;
 
 public class PremiumFactory extends SubscriptionFactory{
 

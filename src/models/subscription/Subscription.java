@@ -1,4 +1,4 @@
-package models;
+package models.subscription;
 
 public abstract class Subscription {
 	private Integer ID;

@@ -1,4 +1,4 @@
-package models;
+package models.subscription;
 
 public class Free extends Subscription{
 

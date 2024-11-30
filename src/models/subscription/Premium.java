@@ -1,4 +1,4 @@
-package models;
+package models.subscription;
 
 public class Premium extends Subscription{
 	private String subscription;

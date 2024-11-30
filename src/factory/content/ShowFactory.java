@@ -1,7 +1,7 @@
-package factory;
+package factory.content;
 
-import models.Content;
-import models.Show;
+import models.content.Content;
+import models.content.Show;
 
 public class ShowFactory extends ContentFactory{
 

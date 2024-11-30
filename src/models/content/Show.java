@@ -1,4 +1,4 @@
-package models;
+package models.content;
 
 public class Show extends Content{
 	

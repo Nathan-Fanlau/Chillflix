@@ -1,6 +1,6 @@
-package factory;
+package factory.content;
 
-import models.Content;
+import models.content.Content;
 
 public abstract class ContentFactory {
 	

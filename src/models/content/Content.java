@@ -1,4 +1,4 @@
-package models;
+package models.content;
 
 public abstract class Content {
 	private Integer ID;
