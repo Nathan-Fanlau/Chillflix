@@ -3,8 +3,10 @@ package factory;
 import models.Content;
 
 public abstract class ContentFactory {
-	public Content orderContent()
-	{
-		
-	}
+	
+	
+	public abstract Content createMovie(Integer ID, String title, Integer duration, String genre, String director, String releaseDate, Float rating);
+	
+	public abstract Content createShow(Integer ID, String title, Integer duration, String genre, Integer season, Integer episode, Integer current);
+	
 }

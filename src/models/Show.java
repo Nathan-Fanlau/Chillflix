@@ -1,6 +1,7 @@
 package models;
 
 public class Show extends Content{
+	
 	private Integer seasons;
 	private Integer episodes;
 	private Integer current;
@@ -23,6 +24,15 @@ public class Show extends Content{
 	public void setCurrent(Integer current) {
 		this.current = current;
 	}
+	
+	public Show(Integer iD, String title, Integer duration, String genre, Integer seasons, Integer episodes,
+			Integer current) {
+		super(iD, title, duration, genre);
+		this.seasons = seasons;
+		this.episodes = episodes;
+		this.current = current;
+	}
+	
 	
 	
 	

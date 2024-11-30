@@ -24,5 +24,12 @@ public class Movie extends Content{
 		this.rating = rating;
 	}
 	
+	public Movie(Integer iD, String title, Integer duration, String genre, String director, String releaseDate,
+			Float rating) {
+		super(iD, title, duration, genre);
+		this.director = director;
+		this.releaseDate = releaseDate;
+		this.rating = rating;
+	}
 	
 }
