@@ -9,7 +9,7 @@ public class ShowFactory extends ContentFactory{
 	public Content createMovie(Integer ID, String title, Integer duration, String genre, String director,
 			String releaseDate, Float rating) {
 		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("MovieFactory cannot create shows.");
+		throw new UnsupportedOperationException("ShowFactory cannot create shows.");
 	}
 
 	@Override
