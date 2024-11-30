@@ -40,14 +40,14 @@ public class Main extends Application {
 	PasswordField passField; 
 	Button submitButton, updateButton, deleteButton, loginButton, registerButton;
 	TableView<User> userTable; 
-	TableColumn<User, String> idCol, nameCol, emailCol, roleCol; 
+	TableColumn<User, String> idCol, nameCol, emailCol; 
 	HBox buttonHbox; 
 	
 	private Connect connect = Connect.getInstance(); 
 	ArrayList<User> userList = new ArrayList<>(); 
 	Random rand = new Random(); 
 	
-	String tempId; 
+	Integer tempId; 
 	
 	public void init() {
 		root = new VBox(); 
@@ -141,6 +141,14 @@ public class Main extends Application {
         Button goToRegister = new Button("Don't have an account? Register here!");
         goToRegister.setOnAction(e -> stage.setScene(registerScene));
         loginPane.add(goToRegister, 1, 3);
+        
+        // Clear fields when the register scene is entered
+        stage.sceneProperty().addListener((obs, oldScene, newScene) -> {
+            if (newScene != null && newScene == loginScene) { // Ensure this code only runs when entering the register scene
+                emailField.clear();
+                passwordField.clear();
+            }
+        });
 
         return loginPane;
     }
@@ -166,33 +174,83 @@ public class Main extends Application {
         PasswordField passwordField = new PasswordField();
         registerPane.add(passwordLabel, 0, 2);
         registerPane.add(passwordField, 1, 2);
-
+        
         Button registerButton = new Button("Register");
         registerButton.setOnAction(e -> {
             String username = usernameField.getText();
             String email = emailField.getText();
             String password = passwordField.getText();
+            String role = "customer"; // Default role
+            Integer id;
+            
+            // Validation checks
+            if (username.length() < 4) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Username must be at least 4 characters long.", ButtonType.OK);
+                alert.showAndWait();
+                return; // Stop further execution
+            }
+
+            if (!email.endsWith("@gmail.com")) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Email must end with @gmail.com.", ButtonType.OK);
+                alert.showAndWait();
+                return; // Stop further execution
+            }
+
+            if (password.length() < 8) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Password must be at least 8 characters long.", ButtonType.OK);
+                alert.showAndWait();
+                return; // Stop further execution
+            }
 
             try {
-                String query = "INSERT INTO users (Username, Email, Password) VALUES (?, ?, ?)";
-                PreparedStatement ps = connect.preparedStatement(query);
-                ps.setString(1, username);
-                ps.setString(2, email);
-                ps.setString(3, password);
+                // Query to get the highest current user ID
+                String getIdQuery = "SELECT MAX(ID) FROM users";
+                ResultSet rs = connect.execQuery(getIdQuery); // Assuming execQuery returns ResultSet
 
-                ps.executeUpdate();
+                // Determine the new ID
+                if (rs.next() && rs.getString(1) != null) {
+                    Integer lastId = rs.getInt(1);
+                    id = lastId + 1;
+                } else {
+                    id = 1; // Start with ID 1 if no existing records
+                }
+
+                // Insert new user into the database
+                String query = String.format(
+                    "INSERT INTO users VALUES ('%d', '%s', '%s', '%s', '%s')",
+                    id, username, email, password, role
+                );
+                connect.execUpdate(query); // Assuming execUpdate executes updates
+                refreshTable(); 
+                
+                // Show success alert
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, "Registration Successful!", ButtonType.OK);
                 alert.showAndWait();
-                stage.setScene(loginScene); // Navigate to login scene after registration
+
+                // Navigate to login scene after registration
+                stage.setScene(loginScene);
             } catch (SQLException ex) {
                 ex.printStackTrace();
+                // Show error alert
+                Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Registration Failed. Please try again.", ButtonType.OK);
+                errorAlert.showAndWait();
             }
         });
         registerPane.add(registerButton, 1, 3);
 
+
         Button goToLogin = new Button("Already have an account? Login here!");
         goToLogin.setOnAction(e -> stage.setScene(loginScene));
         registerPane.add(goToLogin, 1, 4);
+        
+        // Clear fields when the register scene is entered
+        stage.sceneProperty().addListener((obs, oldScene, newScene) -> {
+            if (newScene != null && newScene == registerScene) { // Ensure this code only runs when entering the register scene
+                usernameField.clear();
+                emailField.clear();
+                passwordField.clear();
+            }
+        });
 
         return registerPane;
     }
@@ -204,15 +262,12 @@ public class Main extends Application {
 		nameCol.setCellValueFactory(new PropertyValueFactory<User, String>("name"));
 		emailCol = new TableColumn<>("User Email"); 
 		emailCol.setCellValueFactory(new PropertyValueFactory<User, String>("email")); 
-		roleCol = new TableColumn<>("User Role"); 
-		roleCol.setCellValueFactory(new PropertyValueFactory<User, String>("role")); 
 		
-		idCol.setMinWidth(root.getWidth() / 4);
-		nameCol.setMinWidth(root.getWidth() / 4);
-		emailCol.setMinWidth(root.getWidth() / 4);
-		roleCol.setMinWidth(root.getWidth() / 4);
+		idCol.setMinWidth(root.getWidth() / 3);
+		nameCol.setMinWidth(root.getWidth() / 3);
+		emailCol.setMinWidth(root.getWidth() / 3);
 		
-		userTable.getColumns().addAll(idCol, nameCol, emailCol, roleCol);
+		userTable.getColumns().addAll(idCol, nameCol, emailCol);
 		
 		refreshTable(); 
 	}
@@ -223,13 +278,13 @@ public class Main extends Application {
 			int num1 = rand.nextInt(10); 
 			int num2 = rand.nextInt(10); 
 			int num3 = rand.nextInt(10); 
-			String id = "US" + num1 + num2 + num3; 
+			Integer id = num1 + num2 + num3; 
 			String username = nameField.getText(); 
 			String email = emailField.getText(); 
 			String pass = passField.getText(); 
 			String role = "customer"; 
 			
-			String query = String.format("INSERT INTO users VALUES ('%s', '%s', '%s', '%s', '%s')",
+			String query = String.format("INSERT INTO users VALUES ('%d', '%s', '%s', '%s', '%s')",
 					id, username, email, pass, role); 
 			connect.execUpdate(query);
 			refreshTable(); 
@@ -270,7 +325,7 @@ public class Main extends Application {
 				ps.setString(1, username);
 				ps.setString(2, email);
 				ps.setString(3, pass);
-				ps.setString(4, tempId);
+				ps.setInt(4, tempId);
 				
 				ps.execute();
 			} catch (SQLException e1) {
@@ -286,7 +341,7 @@ public class Main extends Application {
 //		delete data 
 		deleteButton.setOnAction(e -> {
 			String query = String.format("DELETE FROM users\r\n" + 
-					"WHERE ID = '%s'", tempId); 
+					"WHERE ID = '%d'", tempId); 
 			connect.execUpdate(query); 
 			
 			refreshTable(); 
@@ -303,7 +358,7 @@ public class Main extends Application {
 		
 		try {
 			while(connect.rs.next()) {
-				String id = connect.rs.getString("ID"); 
+				Integer id = connect.rs.getInt("ID"); 
 				String username = connect.rs.getString("Username"); 
 				String email = connect.rs.getString("Email"); 
 				String pass = connect.rs.getString("Password");
@@ -346,7 +401,7 @@ public class Main extends Application {
         loginButton.setOnAction(e -> stage.setScene(loginScene));
         registerButton.setOnAction(e -> stage.setScene(registerScene));
 		
-		stage.setScene(mainScene);
+		stage.setScene(loginScene);
 		stage.show();
 	}
 

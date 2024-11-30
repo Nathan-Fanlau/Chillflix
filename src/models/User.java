@@ -2,13 +2,13 @@ package models;
 
 public class User {
 	
-	private String id; 
+	private Integer id; 
 	private String name; 
 	private String email; 
 	private String pass;
 	private String role;
 	
-	public User(String id, String name, String email, String pass, String role) {
+	public User(Integer id, String name, String email, String pass, String role) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -17,10 +17,10 @@ public class User {
 		this.role = role;
 	}
 	
-	public String getId() {
+	public Integer getId() {
 		return id;
 	}
-	public void setId(String id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	public String getName() {
